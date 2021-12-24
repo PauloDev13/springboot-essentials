@@ -40,4 +40,15 @@ public class AnimeService {
   public void delete(Long id) {
    animes.remove(findById(id));
   }
+
+  public Anime update(Long id, Anime anime) {
+    Anime animeUpdated = findById(id);
+
+    if (animes.contains(animeUpdated)) {
+      anime.setId(animeUpdated.getId());
+      animes.set(animes.indexOf(animeUpdated), anime);
+      return anime;
+    }
+    return null;
+  }
 }
