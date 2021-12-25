@@ -10,6 +10,4 @@ public interface AnimeRequestMapper {
   @Mapping(target = "id", ignore = true)
   Anime toAnime(AnimeRequestDto animeRequestDto);
 
-  AnimeRequestDto toDto(Anime anime);
-
 }
