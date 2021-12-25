@@ -1,6 +1,8 @@
 package com.prmorais.springboot.controller;
 
 import com.prmorais.springboot.domain.Anime;
+import com.prmorais.springboot.dto.AnimeRequestDto;
+import com.prmorais.springboot.mapper.AnimeRequestMapper;
 import com.prmorais.springboot.service.AnimeService;
 import com.prmorais.springboot.util.DateUtil;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ public class AnimeController {
 
   private final DateUtil dateUtil;
   private final AnimeService animeService;
+  private final AnimeRequestMapper requestMapper;
 
   @GetMapping
   public ResponseEntity<List<Anime>> list() {
@@ -33,13 +36,19 @@ public class AnimeController {
   }
 
   @PostMapping
-  public ResponseEntity<Anime> save(@RequestBody Anime anime) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(animeService.save(anime));
+  public ResponseEntity<Anime> save(@RequestBody AnimeRequestDto animeDto) {
+    Anime animeSaved = animeService.save(requestMapper.toAnime(animeDto));
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(animeSaved);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Anime> update(@PathVariable Long id, @RequestBody Anime anime) {
-    return ResponseEntity.ok(animeService.update(id, anime));
+  public ResponseEntity<Anime> update(
+      @PathVariable Long id,
+      @RequestBody AnimeRequestDto animeDto
+  ) {
+    return ResponseEntity.ok(
+        animeService.update(id, requestMapper.toAnime(animeDto)));
   }
 
   @DeleteMapping("/{id}")

@@ -1,54 +1,43 @@
 package com.prmorais.springboot.service;
 
 import com.prmorais.springboot.domain.Anime;
+import com.prmorais.springboot.repository.AnimeRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Service
+@RequiredArgsConstructor
 public class AnimeService {
-  private static final List<Anime> animes;
-
-  static {
-    animes = new ArrayList<>(
-        List.of(new Anime(1L, "DBZ"), new Anime(2L, "Berserk"))
-    );
-  }
+  private final AnimeRepository animeRepository;
 
   public List<Anime> list() {
-    return animes;
+    return animeRepository.findAll();
   }
 
   public Anime findById(Long id) {
-    return animes.stream().filter(anime -> anime.getId().equals(id))
-        .findFirst()
+    return animeRepository.findById(id)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
             String.format("Anime com ID %s not found", id)));
   }
 
   public Anime save(Anime anime) {
-    anime.setId(ThreadLocalRandom.current().nextLong(3, 1000));
-    animes.add(anime);
-    return anime;
-  }
-
-  public void delete(Long id) {
-   animes.remove(findById(id));
+    return animeRepository.save(anime);
   }
 
   public Anime update(Long id, Anime anime) {
     Anime animeUpdated = findById(id);
-
-    if (animes.contains(animeUpdated)) {
-      anime.setId(animeUpdated.getId());
-      animes.set(animes.indexOf(animeUpdated), anime);
-      return anime;
-    }
-    return null;
+    BeanUtils.copyProperties(anime, animeUpdated, "id");
+    return animeRepository.save(animeUpdated);
   }
+
+  public void delete(Long id) {
+    findById(id);
+    animeRepository.deleteById(id);
+  }
+
 }
