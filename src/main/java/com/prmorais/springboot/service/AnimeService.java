@@ -1,12 +1,11 @@
 package com.prmorais.springboot.service;
 
 import com.prmorais.springboot.domain.Anime;
+import com.prmorais.springboot.exception.BadRequestException;
 import com.prmorais.springboot.repository.AnimeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -25,8 +24,7 @@ public class AnimeService {
 
   public Anime findById(Long id) {
     return animeRepository.findById(id)
-        .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
-            String.format("Anime com ID %s not found", id)));
+        .orElseThrow(() -> new BadRequestException(String.format("Anime com ID %s not found", id)));
   }
 
   public Anime save(Anime anime) {
