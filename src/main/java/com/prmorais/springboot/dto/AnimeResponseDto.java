@@ -7,7 +7,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @EqualsAndHashCode
-public class AnimeRequestDto implements Serializable {
+public class AnimeResponseDto implements Serializable {
+  private Long id;
   private String name;
 }
