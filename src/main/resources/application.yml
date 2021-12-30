@@ -13,3 +13,10 @@ spring:
       ddl-auto: update
     show-sql: true
     database: mysql
+
+########## SPRING ACTUATOR ###########
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

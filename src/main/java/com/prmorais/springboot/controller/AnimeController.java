@@ -28,8 +28,6 @@ public class AnimeController {
 
   private final DateUtil dateUtil;
   private final AnimeService animeService;
-  private final AnimeRequestMapper requestMapper;
-  private final AnimeResponseMapper responseMapper;
 
   @GetMapping
   @Operation(summary = "List all Animes")
