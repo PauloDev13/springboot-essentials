@@ -4,6 +4,8 @@ server:
 
 ########## MARIADB CONFIGURATION ###########
 spring:
+  application:
+    name: springboot-essentials
   datasource:
     url: jdbc:mysql://localhost:3306/anime_db?useTimezone=true&createDatabaseIfNotExist=true
     username: root
